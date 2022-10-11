@@ -1,0 +1,30 @@
+html,body{
+	height: 100%;
+    width: 100%;
+}
+
+.header{
+    height: 10%;
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.outline {
+    display: flex;
+    height: 90%;
+}
+
+.tool_bar {
+    width: 10%;
+    background-color: yellow;
+}
+
+.display_area {
+    width: 90%;
+}
+
+#main_canvas{
+    border: 1px solid black;
+}
