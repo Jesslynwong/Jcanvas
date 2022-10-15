@@ -1,11 +1,13 @@
-import {JcanvasType}  from './interface'
-export class Line {
+import {JcanvasType}  from '../interface'
+import Shape from './Shape'
+export default class Line extends Shape{
     is_drawing: boolean = false
     context: CanvasRenderingContext2D
     canvas:HTMLCanvasElement
     style: JcanvasType
     
     constructor( canvas:HTMLCanvasElement, style:JcanvasType ) {
+        super()
         this.canvas = canvas
         this.context = this.canvas.getContext('2d')        
         this.style = style        
