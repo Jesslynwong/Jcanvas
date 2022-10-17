@@ -1,9 +1,9 @@
 import './index.css'
-import {Jcanvas, Brush} from '../jcanvas/ index'
+import {Jcanvas, Brush, Rectangle} from '../jcanvas/ index'
 import Line from '../jcanvas/shape/Line'
 const style = {
     draw_color :'black',
-    draw_width : 20
+    draw_width : 10
 
 }
 
@@ -16,4 +16,8 @@ const jcanvas = new Jcanvas()
 brushBtn.onclick = function() {
     const brush = new Brush(canvas, style)
     jcanvas.add(brush)
+}
+rectBtn.onclick = function() {
+    const rect = new Rectangle(canvas, style)
+    jcanvas.add(rect)
 }

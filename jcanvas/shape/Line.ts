@@ -13,7 +13,7 @@ export default class Line extends Shape{
         this.style = style        
     }
 
-    start(e:any ) {
+    start = (e:any ) => {
         this.is_drawing = true
         if (!this.is_drawing) return 
         this.context.beginPath()    
@@ -24,14 +24,14 @@ export default class Line extends Shape{
         this.context.moveTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop)
     }
 
-    draw(e:any) {    
+    draw = (e:any) => {    
         if (this.is_drawing) {
             this.context.lineTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop)
             this.context.stroke()
         }     
         
     }
-    stop(e:any) {
+    stop = (e:any) => {
         if (this.is_drawing) {
             this.is_drawing = false
         }

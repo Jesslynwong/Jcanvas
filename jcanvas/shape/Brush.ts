@@ -13,16 +13,16 @@ export class Brush extends Line{
     }
 
     registryEvents(){        
-        //单独掉方法，this指向window, 用了实例化方法当作 event handler
-        this.canvas.addEventListener('mousedown', this.start.bind(this), false)
-        this.canvas.addEventListener('mousemove', this.draw.bind(this), false)
-        this.canvas.addEventListener('mouseup', this.stop.bind(this), false)
+        //单独掉方法，this指向window, 用了实例化方法当作 event handler,bind了之后出现多个不同
+        this.canvas.addEventListener('mousedown', this.start)
+        this.canvas.addEventListener('mousemove', this.draw)
+        this.canvas.addEventListener('mouseup', this.stop)
     }
 
-    destroyEvents() {        
-        this.canvas.removeEventListener('mousedown', this.start.bind(this), false)
-        this.canvas.removeEventListener('mousemove', this.draw.bind(this), false)
-        this.canvas.removeEventListener('mouseup', this.stop.bind(this), false)
+    destroyEvents() {                
+        this.canvas.removeEventListener('mousedown', this.start)
+        this.canvas.removeEventListener('mousemove', this.draw)
+        this.canvas.removeEventListener('mouseup', this.stop)
     }
 
     // handleEvent = (name) => (event) => {
