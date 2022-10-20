@@ -1,7 +1,8 @@
 import './index.css'
-import {Jcanvas, Brush, Rectangle} from '../jcanvas/ index'
+import {Jcanvas, Brush, Rectangle, Move} from '../jcanvas/ index'
 import {Canvas} from '../CanvasLayer/Canvas'
 import {CanvasCache} from '../CanvasCache/CanvasCache'
+import {Coordinate} from '../jcanvas/interface'
 
 import img from '../asset/bg_image.jpeg'
 const brush_style = {
@@ -30,14 +31,16 @@ function drawBackgroundImage() {
 
 const clusterCanvasDom = document.getElementById('cluster_canvas') as HTMLCanvasElement | null
 const clusterCanvas = new Canvas(clusterCanvasDom, 'source-over')
-const canvasCache = new CanvasCache(clusterCanvas)
-// active_canvas 
 
 const activeCanvasDom = document.getElementById('active_canvas') as HTMLCanvasElement | null
 const activeCanvas = new Canvas(activeCanvasDom,'xor')
+const canvasCache = new CanvasCache(clusterCanvas, activeCanvas)
+// active_canvas 
+
 
 const brushBtn = document.getElementById('brush') as HTMLButtonElement
 const rectBtn = document.getElementById('rect') as HTMLButtonElement
+const choiceBtn = document.getElementById('choice') as HTMLButtonElement
 
 const jcanvas = new Jcanvas()
 
@@ -48,4 +51,10 @@ brushBtn.onclick = function() {
 rectBtn.onclick = function() {
     const rect = new Rectangle(activeCanvas, rect_style, canvasCache)
     jcanvas.add(rect)
+}
+
+choiceBtn.onclick = function() {
+    // const currentHit:Coordinate = activeCanvas.currentHitCoordinate
+    const choice = new Move(activeCanvas, canvasCache)
+    jcanvas.add(choice)
 }
