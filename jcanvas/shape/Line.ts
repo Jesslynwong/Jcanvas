@@ -1,15 +1,17 @@
 import {JcanvasType}  from '../interface'
 import Shape from './Shape'
+import {Canvas} from '../../CanvasLayer/Canvas'
+import {CanvasCache} from '../../CanvasCache/CanvasCache'
 export default class Line extends Shape{
     is_drawing: boolean = false
     context: CanvasRenderingContext2D
     canvas:HTMLCanvasElement
     style: JcanvasType
     
-    constructor( canvas:HTMLCanvasElement, style:JcanvasType ) {
+    constructor( canvas:Canvas, style:JcanvasType ) {
         super()
-        this.canvas = canvas
-        this.context = this.canvas.getContext('2d')        
+        this.canvas = canvas.canvas
+        this.context = canvas.context     
         this.style = style        
     }
 
@@ -31,9 +33,12 @@ export default class Line extends Shape{
         }     
         
     }
-    stop = (e:any) => {
+    stop = (e:any, cache:CanvasCache) => {
         if (this.is_drawing) {
             this.is_drawing = false
+            const brush = this.context.getImageData(0,0,1200,850)
+            cache.addShape(brush)            
+            this.context.clearRect(0,0,1200,850)
         }
     }
 

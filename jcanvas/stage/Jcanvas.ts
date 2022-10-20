@@ -1,6 +1,6 @@
-
 export class Jcanvas {
     allShapes: object[]
+    
    
     constructor() {
         this.allShapes = []

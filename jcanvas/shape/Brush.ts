@@ -1,28 +1,36 @@
 // switch不同的形状对应不同的方法 
 import {JcanvasType} from '../interface'
 import  Line  from './Line'
-
+import {Canvas} from '../../CanvasLayer/Canvas'
+import {CanvasCache} from '../../CanvasCache/CanvasCache'
 export class Brush extends Line{
     canvas:HTMLCanvasElement
+    context: CanvasRenderingContext2D
     style: JcanvasType
+    cache: CanvasCache
     
-    constructor( canvas:HTMLCanvasElement, style:JcanvasType ) {
+    constructor( canvas:Canvas, style:JcanvasType, cache: CanvasCache ) {
         super(canvas, style)
-        this.canvas = canvas
+        this.canvas = canvas.canvas
+        this.context = canvas.context
         this.style = style        
+        this.cache = cache
+    }
+
+    transferImage = (e:any) => {
+        this.stop(e, this.cache)        
     }
 
     registryEvents(){        
-        //单独掉方法，this指向window, 用了实例化方法当作 event handler,bind了之后出现多个不同
         this.canvas.addEventListener('mousedown', this.start)
         this.canvas.addEventListener('mousemove', this.draw)
-        this.canvas.addEventListener('mouseup', this.stop)
+        this.canvas.addEventListener('mouseup', this.transferImage)
     }
 
     destroyEvents() {                
         this.canvas.removeEventListener('mousedown', this.start)
         this.canvas.removeEventListener('mousemove', this.draw)
-        this.canvas.removeEventListener('mouseup', this.stop)
+        this.canvas.removeEventListener('mouseup', this.transferImage)
     }
 
     // handleEvent = (name) => (event) => {

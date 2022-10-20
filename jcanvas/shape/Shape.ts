@@ -1,5 +1,6 @@
 export default class Shape {
     listenerMap: Map<string, any> 
+
     contructor() {
         this.listenerMap = new Map()
     }
@@ -11,4 +12,5 @@ export default class Shape {
             this.listenerMap.set(eventName, [fn])
         }
     }
+
 }
