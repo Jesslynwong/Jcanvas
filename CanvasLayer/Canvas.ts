@@ -43,4 +43,8 @@ export class Canvas {
     getCurrentImageData(){
         return this.context.getImageData(0,0,1200,850)
     }
+
+    translateShape(x:number, y:number) {
+        this.context.translate(x,y)
+    }
 }

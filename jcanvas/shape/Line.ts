@@ -31,8 +31,8 @@ export default class Line extends Shape{
             this.context.lineTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop)
             this.context.stroke()
         }     
-        
     }
+    
     stop = (e:any, cache:CanvasCache) => {
         if (this.is_drawing) {
             this.is_drawing = false
@@ -41,5 +41,4 @@ export default class Line extends Shape{
             this.context.clearRect(0,0,1200,850)
         }
     }
-
 }

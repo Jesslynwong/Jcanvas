@@ -1,4 +1,3 @@
-// switch不同的形状对应不同的方法 
 import {JcanvasType} from '../interface'
 import  Line  from './Line'
 import {Canvas} from '../../CanvasLayer/Canvas'
@@ -32,17 +31,4 @@ export class Brush extends Line{
         this.canvas.removeEventListener('mousemove', this.draw)
         this.canvas.removeEventListener('mouseup', this.transferImage)
     }
-
-    // handleEvent = (name) => (event) => {
-    //        this.allShapes.forEach((shape) => {
-    //          // 获取当前事件的所有监听者
-    //          const listerns = shape.listenerMap.get(name)
-    //          if ( listerns ) {
-    //            listerns.forEach((listener) => listener(event))
-    //          }
-    //        })
-    //      }
-    // }
-     
-    
 }
