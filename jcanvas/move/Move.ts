@@ -1,9 +1,18 @@
+/*
+ * @Author: Jesslynwong jesslynwjx@gmail.com
+ * @Date: 2022-10-20 20:20:53
+ * @LastEditors: Jesslynwong jesslynwjx@gmail.com
+ * @LastEditTime: 2022-10-22 17:47:50
+ * @FilePath: /Jcanvas/jcanvas/move/move.ts
+ * @Description: 移动canvas元素
+ */
 import {Canvas} from '../../CanvasLayer/Canvas'
 import {CanvasCache} from '../../CanvasCache/CanvasCache'
 import {Coordinate} from '../interface'
  export class Move {
     shouldMove: boolean = false
     canvas: Canvas
+    canvasDom:HTMLCanvasElement
     canvasCache: CanvasCache
     selectedImageData:ImageData
     selectedShapeCooridinate: Coordinate
@@ -11,25 +20,28 @@ import {Coordinate} from '../interface'
     
     constructor(canvas:Canvas, canvasCache: CanvasCache ) {
         this.canvas = canvas // active
+        this.canvasDom = canvas.canvas
         this.canvasCache = canvasCache 
         this.isMove = false
     }
 
     registryEvents(){
-         // 移动拖拽 active
-        this.canvas.canvas.addEventListener('mousedown', this.handleSelectedShape)
-        this.canvas.canvas.addEventListener('mousemove', this.handleMoveShape) // draw2active
-        this.canvas.canvas.addEventListener('mouseup', this.handleMoveupShape) // compositeshape2cluster
+        this.canvasDom.addEventListener('mousedown', this.handleSelectedShape)
+        this.canvasDom.addEventListener('mousemove', this.handleMoveShape) // draw2active
+        this.canvasDom.addEventListener('mouseup', this.handleMoveupShape) // compositeshape2cluster
     }
 
     destroyEvents(){
-        this.canvas.canvas.removeEventListener('mousedown', this.handleSelectedShape)
-        this.canvas.canvas.removeEventListener('mousemove', this.handleMoveShape)
-        this.canvas.canvas.removeEventListener('mouseup', this.handleMoveupShape)
+        this.canvasDom.removeEventListener('mousedown', this.handleSelectedShape)
+        this.canvasDom.removeEventListener('mousemove', this.handleMoveShape)
+        this.canvasDom.removeEventListener('mouseup', this.handleMoveupShape)
     }
 
-    // 选中图形，并把图形move到active， 删除cluster
-    // 设置开关is_drawing
+    /**
+     * @description: 把在cluster canvas中点击对应的元素删除，移动到active canvas
+     * @param {*} e
+     * @return {*}
+     */    
     handleSelectedShape = (e) => {
         this.selectedShapeCooridinate = this.canvas.hitCurrentCoordinate(e)        
         const selectedShapeList:ImageData[] = this.canvasCache.searchSelectedShape(this.selectedShapeCooridinate)
@@ -37,19 +49,31 @@ import {Coordinate} from '../interface'
         if (selectedShapeList.length !== 0) {
             this.isMove = true
             this.selectedImageData = selectedShapeList[selectedShapeList.length - 1]
-            this.canvasCache.deleteShape(this.selectedImageData) // 删除cluster
-            this.canvas.compositeShape(this.selectedImageData,0,0) // 渲染active            
+            this.canvasCache.deleteShape(this.selectedImageData) 
+            this.canvas.compositeShape(this.selectedImageData,0,0)            
         }
     }
 
+    /**
+     * @description: 在active canvas上移动，移动前清除该canvas，在active层进行合成
+     * @param {*} e
+     * @return {*}
+     */    
     handleMoveShape = (e) => {
         if (this.isMove === false) return
+        
         this.canvas.clearCanvas()
-        const dx =  e.clientX - this.canvas.canvas.offsetTop - this.selectedShapeCooridinate.x
-        const dy = e.clientY - this.canvas.canvas.offsetLeft - this.selectedShapeCooridinate.y        
-        this.canvas.compositeShape(this.selectedImageData,dx,dy) // 没有通过active cache
+        const currentCoordinate = this.canvas.hitCurrentCoordinate(e)
+        const dx =  currentCoordinate.x - this.selectedShapeCooridinate.x
+        const dy = currentCoordinate.y - this.selectedShapeCooridinate.y                
+        this.canvas.compositeShape(this.selectedImageData,dx,dy) 
     }
 
+    /**
+     * @description: 把移动元素放到canvas cache里面，通过canvas cache合成
+     * @param {*} e
+     * @return {*}
+     */    
     handleMoveupShape = (e) => {
         if (this.isMove === false) return
         this.isMove = false

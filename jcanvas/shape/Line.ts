@@ -2,15 +2,16 @@ import {JcanvasType}  from '../interface'
 import Shape from './Shape'
 import {Canvas} from '../../CanvasLayer/Canvas'
 import {CanvasCache} from '../../CanvasCache/CanvasCache'
+import {Coordinate} from '../interface'
 export default class Line extends Shape{
     is_drawing: boolean = false
     context: CanvasRenderingContext2D
-    canvas:HTMLCanvasElement
+    canvas:Canvas
     style: JcanvasType
     
     constructor( canvas:Canvas, style:JcanvasType ) {
         super()
-        this.canvas = canvas.canvas
+        this.canvas = canvas
         this.context = canvas.context     
         this.style = style        
     }
@@ -23,22 +24,23 @@ export default class Line extends Shape{
         this.context.lineCap = 'round'
         this.context.lineJoin = 'round'
         this.context.lineWidth = this.style.draw_width
-        this.context.moveTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop)
+        const currentCooridination = this.canvas.hitCurrentCoordinate(e)
+        this.context.moveTo(currentCooridination.x, currentCooridination.y)
     }
 
     draw = (e:any) => {    
         if (this.is_drawing) {
-            this.context.lineTo(e.clientX - this.canvas.offsetLeft, e.clientY - this.canvas.offsetTop)
+            const currentCooridination:Coordinate  = this.canvas.hitCurrentCoordinate(e)
+            this.context.lineTo(currentCooridination.x,currentCooridination.y)
             this.context.stroke()
         }     
     }
-    
     stop = (e:any, cache:CanvasCache) => {
         if (this.is_drawing) {
             this.is_drawing = false
-            const brush = this.context.getImageData(0,0,1200,850)
+            const brush = this.canvas.getImageData()
             cache.addShape(brush)            
-            this.context.clearRect(0,0,1200,850)
+            this.canvas.clearCanvas()
         }
     }
 }

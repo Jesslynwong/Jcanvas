@@ -1,4 +1,13 @@
+/*
+ * @Author: Jesslynwong jesslynwjx@gmail.com
+ * @Date: 2022-10-19 15:19:55
+ * @LastEditors: Jesslynwong jesslynwjx@gmail.com
+ * @LastEditTime: 2022-10-22 17:56:35
+ * @FilePath: /Jcanvas/CanvasLayer/Canvas.ts
+ * @Description: canvas图层
+ */
 import {Coordinate}  from '../jcanvas/interface'
+import canvasConfig from './canvasConfig'
 export class Canvas {
     canvas: HTMLCanvasElement
     context: CanvasRenderingContext2D
@@ -10,14 +19,20 @@ export class Canvas {
         this.context.globalCompositeOperation = compositeType
     }
 
-    // 合成2cluster
+    /**
+     * @description: 通过创造offscreen canvas在cluster canvas合成元素
+     * @param {ImageData} shape
+     * @param {number} dx
+     * @param {number} dy
+     * @return {*}
+     */    
     compositeShape(shape:ImageData, dx:number,dy:number) {    
         const dom = document.createElement('canvas')
-        dom.width = 1200
-        dom.height = 850
+        dom.width = canvasConfig.width
+        dom.height = canvasConfig.height
         const domContext:CanvasRenderingContext2D = dom.getContext('2d')
         domContext.putImageData(shape,0,0)
-        this.context.drawImage(dom,dx,dy,1200,850)
+        this.context.drawImage(dom,dx,dy,canvasConfig.width,canvasConfig.height)
         dom.remove()
     }
 
@@ -28,6 +43,11 @@ export class Canvas {
         }
     }
 
+    /**
+     * @description: 当前点击元素坐标 
+     * @param {*} e
+     * @return {*}
+     */    
     hitCurrentCoordinate = (e) => {     
         return this.currentHitCoordinate = {
             x: e.clientX - this.canvas.offsetLeft,
@@ -35,16 +55,17 @@ export class Canvas {
         }
     }
 
-    // TODO 替换
     clearCanvas(){
-        this.context.clearRect(0,0,1200,850)
+        this.context.clearRect(0,0,canvasConfig.width,canvasConfig.height)
     }
 
     getCurrentImageData(){
-        return this.context.getImageData(0,0,1200,850)
+        return this.context.getImageData(0,0,canvasConfig.width,canvasConfig.height)
     }
 
-    translateShape(x:number, y:number) {
-        this.context.translate(x,y)
+    getImageData() {
+        return this.context.getImageData(0,0,canvasConfig.width,canvasConfig.height)
     }
+
+    
 }
