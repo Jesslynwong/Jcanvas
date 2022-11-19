@@ -1,5 +1,5 @@
 # Jcanvas
-Jcanvas for  render 
+一款简易图形渲染库
 
 ## ✨ 特点
 
